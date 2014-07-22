@@ -43,7 +43,7 @@ Webknit.Blackjack = function() {
 	var dealerScoreValue = 0;
 	var cardValue = 0;
 	var gotAnAce = false;
-	var stopDealing = 20;
+	var stopDealing = 9999999;
 
 	// Deal box
 	var dealBox = $('.deal-box');
@@ -262,7 +262,9 @@ Webknit.Blackjack = function() {
 		// Add the reset card scores
 		updateScoreValues();
 
-		firstVal = false;	
+		firstVal = false;
+		
+		stopDealing = 999999;
 
 		for (var i=0; i<2; i++) {
 
