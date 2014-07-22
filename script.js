@@ -13,14 +13,15 @@ var Webknit = Webknit || {};
 Webknit.Blackjack = function() {
 
 	// Cards
-	var cardsHeart = ["Ace Heart", "1 Heart", "2 Heart","3 Heart", "4 Heart", "5 Heart", "6 Heart", "4 Heart", "5 Heart", "6 Hearts", "7 Heart", "8 Heart", "9 Hearts", "10 Heart", "Jack Heart", "Queen Hearts", "King Heart"];
-	var cardsDiamond = ["Ace Diamond", "1 Diamond", "2 Diamond","3 Diamond", "4 Diamond", "5 Diamond", "6 Diamond", "4 Diamond", "5 Diamond", "6 Diamond", "7 Diamond", "8 Diamond", "9 Diamond", "10 Diamond", "Jack Diamond", "Queen Diamond", "King Diamond"];
-	var cardsSpade = ["Ace Spade", "1 Spade", "2 Spade","3 Spade", "4 Spade", "5 Spade", "6 Spade", "4 Spade", "5 Spade", "6 Spade", "7 Spade", "8 Spade", "9 Spade", "10 Spade", "Jack Spade", "Queen Spade", "King Spade"];
-	var cardsClub = ["Ace Club", "1 Club", "2 Club","3 Club", "4 Club", "5 Club", "6 Club", "4 Club", "5 Club", "6 Club", "7 Club", "8 Club", "9 Club", "10 Club", "Jack Club", "Queen Club", "King Club"]; 
+	var cardsHeart = ["Ace Heart", "2 Heart","3 Heart", "4 Heart", "5 Heart", "6 Heart", "4 Heart", "5 Heart", "6 Hearts", "7 Heart", "8 Heart", "9 Hearts", "10 Heart", "Jack Heart", "Queen Hearts", "King Heart"];
+	var cardsDiamond = ["Ace Diamond", "2 Diamond","3 Diamond", "4 Diamond", "5 Diamond", "6 Diamond", "4 Diamond", "5 Diamond", "6 Diamond", "7 Diamond", "8 Diamond", "9 Diamond", "10 Diamond", "Jack Diamond", "Queen Diamond", "King Diamond"];
+	var cardsSpade = ["Ace Spade", "2 Spade","3 Spade", "4 Spade", "5 Spade", "6 Spade", "4 Spade", "5 Spade", "6 Spade", "7 Spade", "8 Spade", "9 Spade", "10 Spade", "Jack Spade", "Queen Spade", "King Spade"];
+	var cardsClub = ["Ace Club", "2 Club","3 Club", "4 Club", "5 Club", "6 Club", "4 Club", "5 Club", "6 Club", "7 Club", "8 Club", "9 Club", "10 Club", "Jack Club", "Queen Club", "King Club"]; 
 
 	var packCards = cardsHeart.concat(cardsDiamond,cardsSpade,cardsClub);
 
-	var cardsShuffled = shuffleArray(packCards);
+	//var cardsShuffled = shuffleArray(packCards);
+	var cardsShuffled = packCards;
 
 	// Buttons, variables
 	var balance = $('#balance');
@@ -44,6 +45,8 @@ Webknit.Blackjack = function() {
 	var cardValue = 0;
 	var gotAnAce = false;
 	var stopDealing = 9999999;
+	var playersTurn = true;
+	var yourScoreValueAce = 0;
 
 	// Deal box
 	var dealBox = $('.deal-box');
@@ -64,6 +67,35 @@ Webknit.Blackjack = function() {
 		dealBtn.click(dealPlayAction);
 
 	}
+	
+	function checkMoney() {
+	
+		if (balanceAmount < 501) {
+			
+			$('.fivehundred-button').hide();
+			
+		}
+		
+		if (balanceAmount < 101) {
+			
+			$('.onehundred-button').hide();
+			
+		}
+		
+		if (balanceAmount < 11) {
+			
+			$('.ten-button').hide();
+			
+		}
+		
+		if (balanceAmount < 1) {
+			
+			$('.one-button').hide();
+			gameCommentry.empty().html('Youve no money left.');
+			
+		}
+	
+	}
 
 	function updateScoreValues() {
 
@@ -82,6 +114,8 @@ Webknit.Blackjack = function() {
 
 			dealBox.hide();
 			amountBox.show();
+			
+			checkMoney();
 
 		}
 
@@ -120,6 +154,8 @@ Webknit.Blackjack = function() {
 			else {
 
 				gameCommentry.empty().html('Dealer Won. You lost £' + amountStaked);
+				
+				checkMoney();
 
 			}		
 
@@ -275,7 +311,7 @@ Webknit.Blackjack = function() {
 			cardScore(cardsShuffled[0]);
 
 			yourScoreValue = yourScoreValue + cardValue;
-
+			
 			yourScore.html(yourScoreValue);
 
 			// This pushes to the dealers pile.
@@ -293,6 +329,14 @@ Webknit.Blackjack = function() {
 				dealerScore.html(dealerScoreValue);
 				firstVal = true;
 			}
+			
+			if (playersTurn == false && gotAnAce == true) {
+			
+				alert('Dealer has an ace');
+			
+			}
+			
+			gotAnAce = false;
 
 		}
 
