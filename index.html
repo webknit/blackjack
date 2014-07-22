@@ -12,14 +12,57 @@
 	
 	<div class="main-body">
 
-		<h1>Title</h1>
+		<h1>Blackjack!</h1>
+
+		<p class="game-commentry"></p>
+
+		<p>Balance £<span id="balance">0</span></p>
+
+		<div class="scores-box">
+
+			<p>Your score <span id="your-score">0</span></p>
+			<p>Dealer score <span id="dealer-score">0</span></p>
+
+		</div>
+
+		<div class="amount-box">
+
+			<button class="amount" data-amount="1">£1</button>
+			<button class="amount" data-amount="10">£10</button>
+			<button class="amount" data-amount="100">£100</button>
+			<button class="amount" data-amount="500">£500</button>
+
+		</div>
+
+		<div class="deal-box">
+
+			<button class="dealBtn">Hit</button>
+			<button class="standBtn">Stand</button>
+
+		</div>
+
+		<br>
+
+		<div class="cards player-cards">
+
+			<h2>Player Cards</h2>
+			<ul class="player-cards__ul"></ul>
+
+		</div><!-- .player-cards -->
+
+		<div class="cards dealer-cards">
+
+			<h2>Dealer Cards</h2>
+			<ul class="dealer-cards__ul"></ul>
+
+		</div><!-- .dealer-cards -->
 
 		<br><br>
         <a href="http://function.webknit.co.uk/">www.function.webknit.co.uk</a>
 
 	</div><!-- .main-body -->
 	
-	<script src="http//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="script.js"></script>
 
 </body>

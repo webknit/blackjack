@@ -4,3 +4,20 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
 	margin: 2em auto 0;
 	max-width: 700px;
 }
+
+h1, p, .cards {
+	margin-bottom: 0.5em;
+}
+
+li {
+	list-style: none;
+}
+
+.cards, .scores-box, .deal-box, .dealer-cards__ul li:nth-child(2)  {
+	display: none;
+}
+
+.game-commentry {
+	color: red;
+	font-size: 1.5em;
+}
