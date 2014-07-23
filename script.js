@@ -47,6 +47,8 @@ Webknit.Blackjack = function() {
 	var stopDealing = 9999999;
 	var playersTurn = true;
 	var yourScoreValueAce = 0;
+	var playerAceActive = false;
+	var dealerAceActive = false;
 
 	// Deal box
 	var dealBox = $('.deal-box');
@@ -151,6 +153,13 @@ Webknit.Blackjack = function() {
 
 			}
 
+			if (dealerScoreValue == yourScoreValue) {
+
+				gameCommentry.empty().html('Draw.');
+				balanceAmount = balanceAmount + amountStaked;
+
+			}
+
 			else {
 
 				gameCommentry.empty().html('Dealer Won. You lost £' + amountStaked);
@@ -161,10 +170,11 @@ Webknit.Blackjack = function() {
 
 			dealBox.hide();
 			amountBox.show();
+			updateScoreValues();
 
 		}
 
-		updateScoreValues();	
+		//updateScoreValues();	
 
 	}
 
@@ -183,7 +193,31 @@ Webknit.Blackjack = function() {
 
 			dealerScoreValue = dealerScoreValue + cardValue;
 
-			updateScoreValues();
+			if (playerAceActive = true) {
+
+				yourScoreValueAce = yourScoreValue + 10;
+
+				if (yourScoreValueAce < 21) {
+
+					yourScore.html(yourScoreValueAce);
+
+					yourScoreValue = yourScoreValueAce;
+
+				}
+
+				else {
+
+					yourScore.html(yourScoreValue);
+
+				}
+
+			}
+
+			if (playerAceActive != true) {
+
+				updateScoreValues();
+
+			}
 
 			checkScores();
 
@@ -203,7 +237,25 @@ Webknit.Blackjack = function() {
 
 			yourScoreValue = yourScoreValue + cardValue;
 
-			updateScoreValues();
+			if (playerAceActive = true) {
+
+				yourScoreValueAce = yourScoreValue + 10;
+
+				yourScore.html(yourScoreValue + "/" + yourScoreValueAce);
+
+				if (yourScoreValueAce > 21) {
+
+					yourScore.html(yourScoreValue);
+
+				}
+
+			}
+
+			if (playerAceActive != true) {
+
+				updateScoreValues();
+
+			}
 
 			checkScores();
 
@@ -224,10 +276,8 @@ Webknit.Blackjack = function() {
 
 			if(cardDrawnFirst == "Ace") {
 
-				console.log("its an ace");
-
 				// Card value
-				cardValue = 1;
+				cardValue = 1 ;
 
 				// Switch to true with ace in pile
 				gotAnAce = true;
@@ -311,8 +361,23 @@ Webknit.Blackjack = function() {
 			cardScore(cardsShuffled[0]);
 
 			yourScoreValue = yourScoreValue + cardValue;
-			
-			yourScore.html(yourScoreValue);
+			yourScoreValueAce = yourScoreValue + 10;
+
+			if (gotAnAce == true) {
+
+				yourScore.html(yourScoreValue + "/" + yourScoreValueAce);
+				playerAceActive = true;			
+
+			}
+
+			if (gotAnAce != true) {
+
+				yourScore.html(yourScoreValue);
+
+			}
+
+			gotAnAce = false;
+			playersTurn = false;
 
 			// This pushes to the dealers pile.
 			// Take the first card and output it
@@ -322,25 +387,51 @@ Webknit.Blackjack = function() {
 			cardScore(cardsShuffled[0]);
 
 			dealerScoreValue = dealerScoreValue + cardValue;
+			dealerScoreValueAce = dealerScoreValue + 10;
 
 			console.log("firstVal is " + firstVal);
 
 			if (firstVal == false) {
-				dealerScore.html(dealerScoreValue);
+
+				//dealerScore.html(cardValue);
+
+				if (playersTurn == false && gotAnAce == true) {
+			
+					dealerScore.html(dealerScoreValue + "/" + dealerScoreValueAce);
+					dealerAceActive = true;
+				
+				}
+
+				if (playersTurn == false && gotAnAce != true) {
+
+					dealerScore.html(dealerScoreValue);
+
+				}
+
 				firstVal = true;
+
 			}
-			
-			if (playersTurn == false && gotAnAce == true) {
-			
-				alert('Dealer has an ace');
-			
-			}
-			
+
 			gotAnAce = false;
+			playersTurn = true;
 
 		}
 
-		dealBox.show();
+		if (yourScoreValueAce == 21 && dealerScoreValueAce != 21) {
+
+			yourScore.html(yourScoreValueAce);
+
+			gameCommentry.empty().html('You got Blackjack. You won £' + amountStaked);
+
+			amountBox.show();
+
+		}
+
+		else {
+
+			dealBox.show();
+
+		}
 
 	}
 
