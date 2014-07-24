@@ -13,7 +13,7 @@ var Webknit = Webknit || {};
 Webknit.Blackjack = function() {
 
 	// Cards
-	var cardsHeart = ["Ace Heart", "2 Heart","3 Heart", "4 Heart", "5 Heart", "6 Heart", "4 Heart", "5 Heart", "6 Hearts", "7 Heart", "8 Heart", "9 Hearts", "10 Heart", "Jack Heart", "Queen Hearts", "King Heart"];
+	var cardsHeart = ["Ace Heart", "3 Heart", "4 Heart", "5 Heart", "Ace Heart", "Ace Heart", "6 Heart","10 Heart", "4 Heart", "5 Heart", "6 Hearts", "7 Heart", "8 Heart", "9 Hearts", "10 Heart", "Jack Heart", "Queen Hearts", "King Heart"];
 	var cardsDiamond = ["Ace Diamond", "2 Diamond","3 Diamond", "4 Diamond", "5 Diamond", "6 Diamond", "4 Diamond", "5 Diamond", "6 Diamond", "7 Diamond", "8 Diamond", "9 Diamond", "10 Diamond", "Jack Diamond", "Queen Diamond", "King Diamond"];
 	var cardsSpade = ["Ace Spade", "2 Spade","3 Spade", "4 Spade", "5 Spade", "6 Spade", "4 Spade", "5 Spade", "6 Spade", "7 Spade", "8 Spade", "9 Spade", "10 Spade", "Jack Spade", "Queen Spade", "King Spade"];
 	var cardsClub = ["Ace Club", "2 Club","3 Club", "4 Club", "5 Club", "6 Club", "4 Club", "5 Club", "6 Club", "7 Club", "8 Club", "9 Club", "10 Club", "Jack Club", "Queen Club", "King Club"]; 
@@ -121,7 +121,7 @@ Webknit.Blackjack = function() {
 
 		}
 
-		if (dealerScoreValue > 21) {
+		else if (dealerScoreValue > 21) {
 
 			stopDealing = 0;
 
@@ -137,9 +137,12 @@ Webknit.Blackjack = function() {
 
 		}
 
-		if (dealerScoreValue > 16 && dealerScoreValue < 22) {
+		else if (dealerScoreValue > 16 && dealerScoreValue < 22) {
 
 			stopDealing = 0;
+
+			console.log(yourScoreValue);
+			console.log(dealerScoreValue);
 
 			if (yourScoreValue > dealerScoreValue) {
 
@@ -153,7 +156,7 @@ Webknit.Blackjack = function() {
 
 			}
 
-			if (dealerScoreValue == yourScoreValue) {
+			else if (dealerScoreValue === yourScoreValue) {
 
 				gameCommentry.empty().html('Draw.');
 				balanceAmount = balanceAmount + amountStaked;
@@ -174,7 +177,7 @@ Webknit.Blackjack = function() {
 
 		}
 
-		//updateScoreValues();	
+		updateScoreValues();	
 
 	}
 
@@ -182,7 +185,11 @@ Webknit.Blackjack = function() {
 
 		$(".dealer-cards__ul li:nth-child(2)").show();
 
+		checkScores();
+
 		for (var i = 0; i < stopDealing; i++) {
+
+			//alert(dealerScoreValue);
 
 			// This pushes to the dealers pile.
 			// Take the first card and output it
@@ -195,31 +202,33 @@ Webknit.Blackjack = function() {
 
 			if (playerAceActive = true) {
 
-				yourScoreValueAce = yourScoreValue + 10;
-
-				if (yourScoreValueAce < 21) {
+				if (yourScoreValueAce < 22) {
 
 					yourScore.html(yourScoreValueAce);
-
 					yourScoreValue = yourScoreValueAce;
 
 				}
 
-				else {
+				//yourScoreValue = yourScoreValueAce;
 
-					yourScore.html(yourScoreValue);
+			}
+
+			if (dealerAceActive = true) {
+
+				dealerScoreValueAce = dealerScoreValue + 10;
+
+				dealerScore.html(dealerScoreValue + "/" + dealerScoreValueAce);
+
+				if (dealerScoreValueAce > 21) {
+
+					dealerScore.html(dealerScoreValue);
 
 				}
 
 			}
 
-			if (playerAceActive != true) {
-
-				updateScoreValues();
-
-			}
-
 			checkScores();
+			updateScoreValues();
 
 		}
 
@@ -251,7 +260,7 @@ Webknit.Blackjack = function() {
 
 			}
 
-			if (playerAceActive != true) {
+			else if (playerAceActive != true) {
 
 				updateScoreValues();
 
@@ -277,14 +286,14 @@ Webknit.Blackjack = function() {
 			if(cardDrawnFirst == "Ace") {
 
 				// Card value
-				cardValue = 1 ;
+				cardValue = 1;
 
 				// Switch to true with ace in pile
 				gotAnAce = true;
 
 			}
 
-			if(cardDrawnFirst == "Jack" || cardDrawnFirst == "Queen" || cardDrawnFirst == "King") {
+			else if(cardDrawnFirst == "Jack" || cardDrawnFirst == "Queen" || cardDrawnFirst == "King") {
 
 				console.log("its an 10");
 
@@ -344,11 +353,16 @@ Webknit.Blackjack = function() {
 		// reset the card scores
 		yourScoreValue = 0;
 		dealerScoreValue = 0;
+		yourScoreValueAce = 0;
+		dealerScoreValueAce = 0;
 
 		// Add the reset card scores
 		updateScoreValues();
 
 		firstVal = false;
+
+		dealerAceActive = false;
+		playerAceActive = false;
 		
 		stopDealing = 999999;
 
@@ -360,17 +374,19 @@ Webknit.Blackjack = function() {
 			// Take this to external function to determine the score
 			cardScore(cardsShuffled[0]);
 
+			console.log(cardValue);
+
 			yourScoreValue = yourScoreValue + cardValue;
 			yourScoreValueAce = yourScoreValue + 10;
 
-			if (gotAnAce == true) {
+			if (gotAnAce == true || playerAceActive == true) {
 
 				yourScore.html(yourScoreValue + "/" + yourScoreValueAce);
 				playerAceActive = true;			
 
 			}
 
-			if (gotAnAce != true) {
+			if (playerAceActive != true) {
 
 				yourScore.html(yourScoreValue);
 
@@ -402,7 +418,7 @@ Webknit.Blackjack = function() {
 				
 				}
 
-				if (playersTurn == false && gotAnAce != true) {
+				else if (playersTurn == false && dealerAceActive != true) {
 
 					dealerScore.html(dealerScoreValue);
 
